@@ -1,26 +1,54 @@
 package business.order;
 
 import api.ApiException;
+import business.BookstoreDbException;
+import business.JdbcUtils;
 import business.book.Book;
 import business.book.BookDao;
 import business.cart.ShoppingCart;
+import business.cart.ShoppingCartItem;
+import business.customer.Customer;
+import business.customer.CustomerDao;
 import business.customer.CustomerForm;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.YearMonth;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.Random;
 
 public class DefaultOrderService implements OrderService {
 
 	private BookDao bookDao;
+	private CustomerDao customerDao;
+	private OrderDao orderDao;
+	private LineItemDao lineItemDao;
+	private Random random = new Random();
+
 	public void setBookDao(BookDao bookDao) {
 		this.bookDao = bookDao;
 	}
 
+	public void setCustomerDao(CustomerDao customerDao) {this.customerDao = customerDao; }
+
+	public void setOrderDao(OrderDao orderDao) {this.orderDao = orderDao;}
+
+	public void setLineItemDao(LineItemDao lineItemDao) { this.lineItemDao = lineItemDao; }
+
 	@Override
 	public OrderDetails getOrderDetails(long orderId) {
-		// NOTE: THIS METHOD PROVIDED NEXT PROJECT
-		return null;
+		Order order = orderDao.findByOrderId(orderId);
+		Customer customer = customerDao.findByCustomerId(order.getCustomerId());
+		List<LineItem> lineItems = lineItemDao.findByOrderId(orderId);
+		List<Book> books = lineItems
+				.stream()
+				.map(lineItem -> bookDao.findByBookId(lineItem.getBookId()))
+				.collect(Collectors.toList());
+		return new OrderDetails(order, customer, lineItems, books);
 	}
 
 	@Override
@@ -29,11 +57,65 @@ public class DefaultOrderService implements OrderService {
 		validateCustomer(customerForm);
 		validateCart(cart);
 
-		// NOTE: MORE CODE PROVIDED NEXT PROJECT
-
-		return -1;
+		try (Connection connection = JdbcUtils.getConnection()) {
+			Date date = getDate(
+					customerForm.getCcExpiryMonth(),
+					customerForm.getCcExpiryYear());
+			return performPlaceOrderTransaction(
+					customerForm.getName(),
+					customerForm.getAddress(),
+					customerForm.getPhone(),
+					customerForm.getEmail(),
+					customerForm.getCcNumber(),
+					date, cart, connection);
+		} catch (SQLException e) {
+			throw new BookstoreDbException("Error during close connection for customer order", e);
+		}
 	}
 
+	private Date getDate(String monthString, String yearString) {
+		int month = Integer.parseInt(monthString);
+		int year = Integer.parseInt(yearString);
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.set(Calendar.MONTH, month);//auto goes to last day of the month
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.DATE, -5);//the last day of the month -5
+		Date date = calendar.getTime();
+
+		return date;
+		}
+
+	private long performPlaceOrderTransaction(
+			String name, String address, String phone,
+			String email, String ccNumber, Date date,
+			ShoppingCart cart, Connection connection) {
+		try {
+			connection.setAutoCommit(false);
+			long customerId = customerDao.create(
+					connection, name, address, phone, email,
+					ccNumber, date);
+			long customerOrderId = orderDao.create(
+					connection,
+					cart.getComputedSubtotal() + cart.getSurcharge(),
+					generateConfirmationNumber(), customerId);
+			for (ShoppingCartItem item : cart.getItems()) {
+				lineItemDao.create(connection, customerOrderId,
+						item.getBookId(), item.getQuantity());
+			}
+			connection.commit();
+			return customerOrderId;
+		} catch (Exception e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BookstoreDbException("Failed to roll back transaction", e1);
+			}
+			return 0;
+		}
+	}
+
+	private int generateConfirmationNumber(){ return random.nextInt(999999999);}
 
 	private void validateCustomer(CustomerForm customerForm) {
 
@@ -128,11 +210,18 @@ public class DefaultOrderService implements OrderService {
 
 	private boolean expiryDateIsInvalid(String ccExpiryMonth, String ccExpiryYear) {
 
+		if (ccExpiryMonth == null) return true;
+		if (ccExpiryYear == null) return true;
+		if (ccExpiryMonth.equals("")) return true;
+		if (ccExpiryYear.equals("")) return true;
+
 		int ccExpiryMonthNum = Integer.parseInt(ccExpiryMonth);
 		int ccExpiryYearNum = Integer.parseInt(ccExpiryYear);
 
 		int thisMonth = YearMonth.now().getMonthValue();
 		int thisYear = YearMonth.now().getYear();
+
+		if (ccExpiryMonthNum > 12 || ccExpiryMonthNum < 1) return true;
 
 		if (ccExpiryMonthNum < thisMonth && ccExpiryYearNum == thisYear) return true;
 		if (ccExpiryYearNum < thisYear) return true;

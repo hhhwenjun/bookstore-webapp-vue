@@ -1,0 +1,58 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection) or
+# paste cURL into the file and request will be converted to HTTP Request format.
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+GET http://localhost:8080/WenjunBookstoreOrder/api/categories
+Accept: application/json
+
+###
+# curl 'http://localhost:8080/WenjunBookstoreOrder/api/orders' -X POST -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: http://localhost:8081/' -H 'Content-Type: application/json' -H 'Origin: http://localhost:8081' -H 'Connection: keep-alive' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: cross-site' --data-raw '{"cart":{"items":[{"book":{"bookId":1001,"title":"Pride and Prejudice","author":"Jane Austen","description":"","price":999,"rating":0,"isPublic":false,"isFeatured":false,"categoryId":1001},"quantity":1}]},"customerForm":{"name":"Wenjun Han","address":"2301 Street","phone":"5409981890","email":"22@11.com","ccNumber":"4444333322221111","ccExpiryMonth":11,"ccExpiryYear":2021}}'
+POST http://localhost:8080/WenjunBookstoreOrder/api/orders
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Referer: http://localhost:8081/
+Origin: http://localhost:8081
+Connection: keep-alive
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: cross-site
+Content-Type: application/json
+
+{
+  "cart": {
+    "items": [
+      {
+        "book": {
+          "bookId": 1001,
+          "title": "Pride and Prejudice",
+          "author": "Jane Austen",
+          "description": "",
+          "price": 999,
+          "rating": 0,
+          "isPublic": false,
+          "isFeatured": false,
+          "categoryId": 1001
+        },
+        "quantity": 1
+      }
+    ]
+  },
+  "customerForm": {
+    "name": "Wenjun",
+    "address": "2300 street",
+    "phone": "(540)998-1890",
+    "email": "22@11.com",
+    "ccNumber": "4444333322221111",
+    "ccExpiryMonth": 11,
+    "ccExpiryYear": 2021
+  }
+}
+
+###
+
+

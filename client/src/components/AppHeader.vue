@@ -8,7 +8,7 @@
         <img
           src="@/assets/images/site/Bookshop_logo.png"
           alt="Book Galaxy Logo"
-          style="min-width: 150px; min-height: 110px"
+          class="img-style"
         />
       </router-link>
     </section>
@@ -16,20 +16,15 @@
       <button class="button cart">
         <router-link to="/cart">
           <span class="fa-stack">
-            <i
-              class="fas fa-shopping-cart fa-stack-1x"
-              style="font-size: medium; text-align: center"
-            >
-              <strong
-                style="color: #110780; font-size: medium; text-align: center"
-              >
+            <i class="fas fa-shopping-cart fa-stack-1x cart-icon-style">
+              <strong class="cart-number-style">
                 {{ $store.state.cart.numberOfItems }}
               </strong>
             </i>
           </span>
         </router-link>
       </button>
-      <button class="button login" style="color: #110780; font-size: medium">
+      <button class="button login login-style">
         <strong class="top-text;"> WH </strong>
       </button>
       <form action="category.html" class="search-form">
@@ -40,7 +35,7 @@
         />
       </form>
       <button type="submit" class="search-button">
-        <i class="fa fa-search" style="color: burlywood"></i>
+        <i class="fa fa-search submit-style"></i>
       </button>
     </section>
   </header>
@@ -64,15 +59,6 @@ header {
   grid-template-columns: 40% 20% 40%;
   width: 100%;
   height: 167px;
-  /*
-  things layout by childs, you can change it to grid, then delete padding and gap.
-  In grid, you need to define how many cols and rows you need to have
-
-  display: grid;
-  grid-template-columns: 33% 33% 33%; or 1fr 1fr 1fr;(3 columns, each 1/3 of it)
-  gap: 1em;
-
-  */
   padding: 0.5em;
   gap: 0.45em;
 }
@@ -101,13 +87,33 @@ header {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 33% 33% 33%;
-  /*
-  now all the elements are equal space and perfect inline,
-  we can also do it using css grid
-  */
+}
+
+.submit-style {
+  color: burlywood;
+}
+
+.login-style {
+  color: #110780;
+  font-size: medium;
+}
+
+.img-style {
+  min-width: 150px;
+  min-height: 110px;
+}
+
+.cart-icon-style {
+  font-size: medium;
+  text-align: center;
+}
+
+.cart-number-style {
+  color: #110780;
+  font-size: medium;
+  text-align: center;
 }
 
 @media (max-width: 600px) {
-  /*responsive design at here, page need to be wrapped*/
 }
 </style>

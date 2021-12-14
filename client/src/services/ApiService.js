@@ -7,7 +7,7 @@ const apiUrl =
   location.protocol +
   "//" +
   location.hostname +
-  ":8080" +
+  portFrom[location.protocol] +
   process.env.BASE_URL +
   "api";
 
@@ -55,6 +55,7 @@ export default {
       })
       .catch((reason) => {
         console.log("Error fetching category data", reason);
+        throw reason;
       });
   },
   placeOrder(order) {

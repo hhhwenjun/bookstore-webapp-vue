@@ -32,13 +32,6 @@
   left: 41%;
 }
 
-.category-image-items {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1em;
-}
-
 .category-image-items a {
   text-align: center;
   cursor: pointer;
@@ -50,9 +43,5 @@
   color: white;
   transform: translateY(-2.25em);
   margin-bottom: -2em;
-}
-
-.background-image {
-  opacity: 80%;
 }
 </style>

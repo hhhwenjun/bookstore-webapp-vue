@@ -195,7 +195,11 @@ public class ApiResource {
 
         try {
             long orderId = orderService.placeOrder(orderForm.getCustomerForm(), orderForm.getCart());
-            throw new ApiException.InvalidParameter("Transactions have not been implemented yet.");
+            if (orderId > 0) {
+                return orderService.getOrderDetails(orderId);
+            } else {
+                throw new ApiException.InvalidParameter("Unknown error occurred");
+            }
 
             // NOTE: MORE CODE PROVIDED NEXT PROJECT
 

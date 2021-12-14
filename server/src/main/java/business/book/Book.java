@@ -2,11 +2,6 @@ package business.book;
 
 public class Book {
 
-	/*
-	 * book table of your database. Generate a constructor that
-	 * uses those fields. Generate getter methods for those fields,
-	 * and generate a toString method that uses those fields.
-	 */
 	private final long bookId;
 	private final String title;
 	private final String author;

@@ -5,6 +5,7 @@ import Category from "./views/Category.vue";
 import Cart from "./views/Cart";
 import Checkout from "./views/Checkout";
 import Confirmation from "./views/Confirmation";
+import NotFound from "./views/NotFound.vue";
 
 Vue.use(Router);
 
@@ -16,6 +17,7 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home,
+      alias: ["/home", "/index.html"],
     },
     {
       path: "/category/:name",
@@ -24,9 +26,17 @@ export default new Router({
       props: true,
     },
     {
+      path: "/category",
+      redirect: "category/Classics",
+    },
+    {
       path: "/cart",
       name: "cart",
       component: Cart,
+    },
+    {
+      path: "*",
+      component: NotFound,
     },
     {
       path: "/checkout",

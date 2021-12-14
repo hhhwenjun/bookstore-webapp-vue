@@ -15,8 +15,8 @@ POST http://localhost:8080/WenjunBookstoreOrder/api/orders
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0
 Accept: */*
 Accept-Language: en-US,en;q=0.5
-Referer: http://localhost:8081/
-Origin: http://localhost:8081
+Referer: http://localhost:8080/
+Origin: http://localhost:8080
 Connection: keep-alive
 Sec-Fetch-Dest: empty
 Sec-Fetch-Mode: cors

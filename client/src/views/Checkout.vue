@@ -139,8 +139,12 @@
               {{ month }} ({{ index + 1 }})
             </option>
           </select>
-          <select>
-            <option v-for="(year, index) in 15" :key="index">
+          <select v-model="ccExpiryYear">
+            <option
+              v-for="(year, index) in 15"
+              :key="index"
+              :value="2020 + index + 1"
+            >
               {{ yearFrom(index) }}
             </option>
           </select>
@@ -153,23 +157,7 @@
           :disabled="checkoutStatus == 'PENDING'"
           value="Complete Purchase"
         />
-        <!-- disable the input when click submit -->
       </form>
-
-      <!--      <div-->
-      <!--        style="-->
-      <!--          border: 1px solid black;-->
-      <!--          padding: 1em;-->
-      <!--          margin-left: 1em;-->
-      <!--          text-align: left;-->
-      <!--        "-->
-      <!--      >-->
-      <!--        <tree-view-->
-      <!--          :data="$v"-->
-      <!--          :options="{ rootObjectKey: '$v', maxDepth: 1 }"-->
-      <!--        ></tree-view>-->
-      <!--      </div>-->
-      <!--      comment out the tree view-->
 
       <section class="purchase-info-box">
         <section>

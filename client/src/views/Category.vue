@@ -1,8 +1,7 @@
 <template>
   <div class="category-page">
     <category-nav></category-nav>
-    <category-book-list :books="$store.state.selectedCategoryBooks">
-    </category-book-list>
+    <category-book-list></category-book-list>
   </div>
 </template>
 
@@ -23,8 +22,11 @@ export default {
     };
   },
   created: function () {
+    const self = this;
     this.$store.dispatch("selectCategory", this.$route.params.name);
-    this.$store.dispatch("fetchSelectedCategoryBooks");
+    this.$store.dispatch("fetchSelectedCategoryBooks").catch(function () {
+      self.$router.push("/404"); //'/404' triggers NotFound
+    });
   },
 };
 </script>

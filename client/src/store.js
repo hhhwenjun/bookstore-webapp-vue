@@ -6,12 +6,14 @@ import { ShoppingCart } from "@/models/ShoppingCart";
 Vue.use(Vuex);
 
 export const CART_STORAGE_KEY = "cart";
+export const ORDER_DETAIL_STORAGE_KEY = "orderDetail";
 
 export default new Vuex.Store({
   state: {
     categories: [],
     selectedCategoryName: "",
     selectedCategoryBooks: [],
+    orderDetails: null,
     cart: new ShoppingCart(),
   },
   mutations: {
@@ -44,6 +46,17 @@ export default new Vuex.Store({
       });
       state.cart = newCart;
     },
+    CLEAR_ORDER_DETAILS(state) {
+      sessionStorage.removeItem(ORDER_DETAIL_STORAGE_KEY);
+      state.orderDetails = null;
+    },
+    SET_ORDER_DETAILS(state, orderDetails) {
+      state.orderDetails = orderDetails;
+      sessionStorage.setItem(
+        ORDER_DETAIL_STORAGE_KEY,
+        JSON.stringify(orderDetails)
+      );
+    },
   },
   actions: {
     fetchCategories(context) {
@@ -58,7 +71,9 @@ export default new Vuex.Store({
         });
     },
     fetchSelectedCategoryBooks(context) {
-      ApiService.fetchSelectedCategoryBooks(context.state.selectedCategoryName)
+      return ApiService.fetchSelectedCategoryBooks(
+        context.state.selectedCategoryName
+      )
         .then((selectedCategoryBooks) => {
           //response data
           console.log("Data: " + selectedCategoryBooks);
@@ -67,6 +82,7 @@ export default new Vuex.Store({
         .catch((reason) => {
           //invalid result
           console.log("Error: " + reason);
+          throw reason;
         });
     },
     addToCart(context, book) {
@@ -82,11 +98,14 @@ export default new Vuex.Store({
       context.commit("CLEAR_CART");
     },
     placeOrder({ commit, state }, customerForm) {
+      commit("CLEAR_ORDER_DETAILS");
+
       return ApiService.placeOrder({
         cart: state.cart,
         customerForm: customerForm,
-      }).then(() => {
+      }).then((orderDetails) => {
         commit("CLEAR_CART");
+        commit("SET_ORDER_DETAILS", orderDetails);
       });
     },
   },
