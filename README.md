@@ -29,6 +29,7 @@ https://cs5244.cs.vt.edu:8443/WenjunBookstoreTransact/ (may not be available aft
 ### Transition Effect
 
 There are two transition effects on the web app. One is the category drop-down menu, when hover the category name such as "History", the list item would be enlarged for emphasis. 
+
 <img width="187" alt="2021-12-17 (2)" src="https://user-images.githubusercontent.com/66753253/146596099-9a121d7c-5b72-4667-a435-f4d779d3766a.png">
 
 The second transition effect is the add-to-cart button. When hover the button, the text on the button would become bolder.
@@ -40,8 +41,10 @@ All the buttons and links in the web app have active/hover effects such as chang
 
 ### Vuelidate
 
+<img width="561" alt="1639769964(1)" src="https://user-images.githubusercontent.com/66753253/146598919-12bd93c7-73be-400d-8b35-3eae962f7966.png">
 
+The client-side validation would validate the name, address, phone, email, and credit card information to check if they are in a correct format. 
 
 ### Server-side Validation
 
-
+In the server-side validation, before sending the information to the database, the customer information would be further validated as well as the shopping cart(such as invalid price, invalid quantity and etc.). The server-side would clean the customer data and organize the format(such as phone xxx-xxx-xxxx is the same as (xxx)xxx-xxxx). If fail to validate the information, the purchase would not be completed and error message would be sent back as response.
