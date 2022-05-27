@@ -5,7 +5,7 @@
 A RESTful and hardening bookstore web application called BookGalaxy. The web app is developed through Vue framework for the frontend, and mySQL for the backend. It uses Tomcat server and update the webpage content through Ajax. The web app uses Vuex for state management to organize the shopping cart content. In the bookstore web app, you can shop the books through adding them to the shopping cart and checkout. The checkout page would require customer information such as name, address, phone, email and etc. It would validate the information based on its format through Vuelidate and server side validation. When hitting the complete purchase button, customer & order information would be recorded to the database and then clear the shopping cart. 
 
 ## Web Link
-https://cs5244.cs.vt.edu:8443/WenjunBookstoreTransact/ (may not be available after Jan. 2022)
+https://cs5244.cs.vt.edu:8443/WenjunBookstoreTransact/ 
 
 ## Web App Appearance and Design
 
